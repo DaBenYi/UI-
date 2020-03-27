@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+function show_all_extras() {
+    find_all('.col-result').forEach(show_extras);
+}
+
+function hide_all_extras() {
+    find_all('.col-result').forEach(hide_extras);
+}
+
+function show_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.remove("collapsed");
+    expandcollapse.classList.remove("expander");
+    expandcollapse.classList.add("collapser");
+}
+
+function hide_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.add("collapsed");
+    expandcollapse.classList.remove("collapser");
+    expandcollapse.classList.add("expander");
+}
+
+function show_filters() {
+    var filter_items = document.getElementsByClassName('filter');
+    for (var i = 0; i < filter_items.length; i++)
+        filter_items[i].hidden = false;
+}
+
+function add_collapse() {
+    // Add links for show/hide all
+    var resulttable = find('table#results-table');
+    var showhideall = document.createElement("p");
+    showhideall.innerHTML = '<a href="javascript:show_all_extras()">Show all details</a> / ' +
+                            '<a href="javascript:hide_all_extras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    find_all('.col-result').forEach(function(elem) {
+        var collapsed = get_query_parameter('collapsed') || 'Passed';
+        var extras = elem.parentNode.nextElementSibling;
+        var expandcollapse = document.createElement("span");
+        if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add("collapsed");
+            expandcollapse.classList.add("expander");
+        } else {
+            expandcollapse.classList.add("collapser");
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener("click", function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains("collapsed")) {
+                show_extras(event.currentTarget);
+            } else {
+                hide_extras(event.currentTarget);
+            }
+        });
+    })
+}
+
+function get_query_parameter(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () {
+    reset_sort_headers();
+
+    add_collapse();
+
+    show_filters();
+
+    sort_column(find('.initial-sort'));
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+};
+
+function sort_table(clicked, key_func) {
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+    var sorted_rows = sort(rows, key_func, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    var thead = document.getElementById("results-table-head");
+    document.getElementById('results-table').remove();
+    var parent = document.createElement("table");
+    parent.id = "results-table";
+    parent.appendChild(thead);
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName("BODY")[0].appendChild(parent);
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+
+        if (key_a == key_b) return 0;
+
+        if (reversed) {
+            return (key_a < key_b ? 1 : -1);
+        } else {
+            return (key_a > key_b ? 1 : -1);
+        }
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+                       'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function is_all_rows_hidden(value) {
+  return value.hidden == false;
+}
+
+function filter_table(elem) {
+    var outcome_att = "data-test-result";
+    var outcome = elem.getAttribute(outcome_att);
+    class_outcome = outcome + " results-table-row";
+    var outcome_rows = document.getElementsByClassName(class_outcome);
+
+    for(var i = 0; i < outcome_rows.length; i++){
+        outcome_rows[i].hidden = !elem.checked;
+    }
+
+    var rows = find_all('.results-table-row').filter(is_all_rows_hidden);
+    var all_rows_hidden = rows.length == 0 ? true : false;
+    var not_found_message = document.getElementById("not-found-message");
+    not_found_message.hidden = !all_rows_hidden;
+}
+</script>
+    <h1>report.html</h1>
+    <p>Report generated on 07-Mar-2020 at 20:51:16 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v2.0.1</p>
+    <h2>Environment</h2>
+    <table id="environment">
+      <tr>
+        <td>JAVA_HOME</td>
+        <td>C:\Program Files\Java\jdk1.8.0_151</td></tr>
+      <tr>
+        <td>Packages</td>
+        <td>{&apos;pytest&apos;: &apos;5.3.2&apos;, &apos;py&apos;: &apos;1.8.1&apos;, &apos;pluggy&apos;: &apos;0.13.1&apos;}</td></tr>
+      <tr>
+        <td>Platform</td>
+        <td>Windows-10-10.0.17763-SP0</td></tr>
+      <tr>
+        <td>Plugins</td>
+        <td>{&apos;allure-pytest&apos;: &apos;2.8.7&apos;, &apos;html&apos;: &apos;2.0.1&apos;, &apos;metadata&apos;: &apos;1.8.0&apos;, &apos;rerunfailures&apos;: &apos;8.0&apos;}</td></tr>
+      <tr>
+        <td>Python</td>
+        <td>3.6.5</td></tr></table>
+    <h2>Summary</h2>
+    <p>8 tests ran in 79.94 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="passed">8 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="failed">0 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>, <input checked="true" class="filter" data-test-result="rerun" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="rerun">0 rerun</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_Shopping_Cart/test_shopping_cart.py::TestShoppingCart::test_add_products</td>
+          <td class="col-duration">31.23</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:50:04,221-INFO-case_login.py-web-日志信息:等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:50:04,251-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:04,252-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:50:04,258-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+2020-03-07 20:50:04,328-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+2020-03-07 20:50:04,339-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+2020-03-07 20:50:04,391-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+2020-03-07 20:50:04,399-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+2020-03-07 20:50:06,406-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//li[@id=&quot;goodscase2&quot;]&#x27;)可见
+2020-03-07 20:50:30,982-INFO-case_login.py-web-日志信息:等待结束。等待时长为：24
+2020-03-07 20:50:30,983-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//li[@id=&quot;goodscase2&quot;]&#x27;)可见
+2020-03-07 20:50:30,991-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：(&#x27;xpath&#x27;, &#x27;//li[@id=&quot;goodscase2&quot;]&#x27;)
+2020-03-07 20:50:31,036-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//div[@id=&quot;index_sale_box_2&quot;]//span&#x27;)可见
+2020-03-07 20:50:31,045-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：(&#x27;xpath&#x27;, &#x27;//div[@id=&quot;index_sale_box_2&quot;]//span&#x27;)
+2020-03-07 20:50:31,135-INFO-case_login.py-web-日志信息:商品详情页窗口切换成功
+2020-03-07 20:50:31,136-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//input[@value=&quot;添加到购物车&quot;]&#x27;)可见
+2020-03-07 20:50:34,831-INFO-case_login.py-web-日志信息:等待结束。等待时长为：3
+2020-03-07 20:50:34,832-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@value=&quot;添加到购物车&quot;]&#x27;)可见
+2020-03-07 20:50:34,840-INFO-case_login.py-web-日志信息:商品详情页 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value=&quot;添加到购物车&quot;]&#x27;)
+2020-03-07 20:50:34,889-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//li[contains(text(),&quot;已成功添加到购物车！&quot;)]&#x27;)可见
+2020-03-07 20:50:35,431-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:35,432-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//li[contains(text(),&quot;已成功添加到购物车！&quot;)]&#x27;)可见
+2020-03-07 20:50:35,440-INFO-case_login.py-web-日志信息:商品详情页-已成功添加到购物车！ 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//li[contains(text(),&quot;已成功添加到购物车！&quot;)]&#x27;)
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//li[@id=&quot;goodscase2&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：24
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//li[@id=&quot;goodscase2&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 首页面-选择商品 点击元素：(&#x27;xpath&#x27;, &#x27;//li[@id=&quot;goodscase2&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//div[@id=&quot;index_sale_box_2&quot;]//span&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 首页面-选择商品 点击元素：(&#x27;xpath&#x27;, &#x27;//div[@id=&quot;index_sale_box_2&quot;]//span&#x27;)
+[32mINFO    [0m web:case_login.py:28 商品详情页窗口切换成功
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//input[@value=&quot;添加到购物车&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：3
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@value=&quot;添加到购物车&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 商品详情页 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value=&quot;添加到购物车&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//li[contains(text(),&quot;已成功添加到购物车！&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//li[contains(text(),&quot;已成功添加到购物车！&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 商品详情页-已成功添加到购物车！ 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//li[contains(text(),&quot;已成功添加到购物车！&quot;)]&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_Shopping_Cart/test_shopping_cart.py::TestShoppingCart::test_jump_to_cart</td>
+          <td class="col-duration">2.93</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:50:35,458-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//span[@id=&quot;cart_goods_top_menu&quot;]&#x27;)可见
+2020-03-07 20:50:35,480-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:35,481-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//span[@id=&quot;cart_goods_top_menu&quot;]&#x27;)可见
+2020-03-07 20:50:35,519-INFO-case_login.py-web-日志信息:商品详情页-查看我的购物车鼠标悬浮成功
+2020-03-07 20:50:35,520-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;查看我的购物车&quot;)]&#x27;)可见
+2020-03-07 20:50:36,046-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:36,047-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;查看我的购物车&quot;)]&#x27;)可见
+2020-03-07 20:50:36,055-INFO-case_login.py-web-日志信息:商品详情页-查看我的购物车 点击元素：(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;查看我的购物车&quot;)]&#x27;)
+2020-03-07 20:50:37,308-INFO-case_login.py-web-日志信息:等待元素(&#x27;id&#x27;, &#x27;favorite_101711&#x27;)可见
+2020-03-07 20:50:37,330-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:37,331-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;favorite_101711&#x27;)可见
+2020-03-07 20:50:37,338-INFO-case_login.py-web-日志信息:购物车详情页-收藏操作 点击元素：(&#x27;id&#x27;, &#x27;favorite_101711&#x27;)
+2020-03-07 20:50:38,376-INFO-case_login.py-web-日志信息:获取警告框成功！！
+2020-03-07 20:50:38,378-INFO-case_login.py-web-日志信息:获取到警告框文本：您已经收藏过该商品!
+2020-03-07 20:50:38,382-INFO-case_login.py-web-日志信息:关闭警告框成功!!
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//span[@id=&quot;cart_goods_top_menu&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//span[@id=&quot;cart_goods_top_menu&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 商品详情页-查看我的购物车鼠标悬浮成功
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;查看我的购物车&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;查看我的购物车&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 商品详情页-查看我的购物车 点击元素：(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;查看我的购物车&quot;)]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;id&#x27;, &#x27;favorite_101711&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;favorite_101711&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 购物车详情页-收藏操作 点击元素：(&#x27;id&#x27;, &#x27;favorite_101711&#x27;)
+[32mINFO    [0m web:case_login.py:28 获取警告框成功！！
+[32mINFO    [0m web:case_login.py:28 获取到警告框文本：您已经收藏过该商品!
+[32mINFO    [0m web:case_login.py:28 关闭警告框成功!!<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_Shopping_Cart/test_shopping_cart.py::TestShoppingCart::test_ashare</td>
+          <td class="col-duration">3.88</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:50:38,387-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//a[contains(@dialog_uri,&quot;101711&quot;)]&#x27;)可见
+2020-03-07 20:50:38,411-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:38,412-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//a[contains(@dialog_uri,&quot;101711&quot;)]&#x27;)可见
+2020-03-07 20:50:38,422-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 点击元素：(&#x27;xpath&#x27;, &#x27;//a[contains(@dialog_uri,&quot;101711&quot;)]&#x27;)
+2020-03-07 20:50:41,095-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//textarea&#x27;)可见
+2020-03-07 20:50:41,116-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:41,117-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//textarea&#x27;)可见
+2020-03-07 20:50:41,126-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 输入元素：(&#x27;xpath&#x27;, &#x27;//textarea&#x27;)
+2020-03-07 20:50:41,162-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@id=&quot;share_storeOrgoods&quot;]&#x27;)可见
+2020-03-07 20:50:41,173-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@id=&quot;share_storeOrgoods&quot;]&#x27;)
+2020-03-07 20:50:41,203-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;发布成功！&quot;)]&#x27;)可见
+2020-03-07 20:50:42,247-INFO-case_login.py-web-日志信息:等待结束。等待时长为：1
+2020-03-07 20:50:42,248-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;发布成功！&quot;)]&#x27;)可见
+2020-03-07 20:50:42,255-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;发布成功！&quot;)]&#x27;)
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//a[contains(@dialog_uri,&quot;101711&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//a[contains(@dialog_uri,&quot;101711&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 购物车详情页-分享操作 点击元素：(&#x27;xpath&#x27;, &#x27;//a[contains(@dialog_uri,&quot;101711&quot;)]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//textarea&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//textarea&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 购物车详情页-分享操作 输入元素：(&#x27;xpath&#x27;, &#x27;//textarea&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@id=&quot;share_storeOrgoods&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 购物车详情页-分享操作 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@id=&quot;share_storeOrgoods&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;发布成功！&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：1
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;发布成功！&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 购物车详情页-分享操作 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;发布成功！&quot;)]&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_login/test_login.py::TestLogin::test_login_user_empty</td>
+          <td class="col-duration">0.77</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:51:01,317-INFO-case_login.py-web-日志信息:等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:01,342-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:01,343-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:01,350-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+2020-03-07 20:51:01,392-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+2020-03-07 20:51:01,404-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+2020-03-07 20:51:01,460-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+2020-03-07 20:51:01,473-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+2020-03-07 20:51:01,535-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;用户名不能为空&quot;)]&#x27;)可见
+2020-03-07 20:51:02,071-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:02,071-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;用户名不能为空&quot;)]&#x27;)可见
+2020-03-07 20:51:02,078-INFO-case_login.py-web-日志信息:获取登录区域-用户名的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;用户名不能为空&quot;)]&#x27;)
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;用户名不能为空&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;用户名不能为空&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 获取登录区域-用户名的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;用户名不能为空&quot;)]&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_login/test_login.py::TestLogin::test_login_passwd_empty</td>
+          <td class="col-duration">0.72</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:51:02,479-INFO-case_login.py-web-日志信息:等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:02,502-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:02,503-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:02,510-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+2020-03-07 20:51:02,559-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+2020-03-07 20:51:02,567-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+2020-03-07 20:51:02,594-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+2020-03-07 20:51:02,603-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+2020-03-07 20:51:02,641-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;密码不能为空&quot;)]&#x27;)可见
+2020-03-07 20:51:03,184-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:03,185-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;密码不能为空&quot;)]&#x27;)可见
+2020-03-07 20:51:03,191-INFO-case_login.py-web-日志信息:获取登录区域-密码的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;密码不能为空&quot;)]&#x27;)
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;密码不能为空&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;密码不能为空&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 获取登录区域-密码的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//label[contains(text(),&quot;密码不能为空&quot;)]&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_login/test_login.py::TestLogin::test_login_user_passwd_wrong[data0]</td>
+          <td class="col-duration">3.19</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:51:03,210-INFO-case_login.py-web-日志信息:等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:03,583-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:03,584-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:03,591-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+2020-03-07 20:51:03,631-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+2020-03-07 20:51:03,638-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+2020-03-07 20:51:03,687-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+2020-03-07 20:51:03,695-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+2020-03-07 20:51:06,360-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+2020-03-07 20:51:06,382-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:06,383-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+2020-03-07 20:51:06,390-INFO-case_login.py-web-日志信息:获取登录区域-登录跳转的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 获取登录区域-登录跳转的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_login/test_login.py::TestLogin::test_login_user_passwd_wrong[data1]</td>
+          <td class="col-duration">4.25</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:51:07,111-INFO-case_login.py-web-日志信息:等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:10,525-INFO-case_login.py-web-日志信息:等待结束。等待时长为：3
+2020-03-07 20:51:10,526-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:10,532-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+2020-03-07 20:51:10,586-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+2020-03-07 20:51:10,594-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+2020-03-07 20:51:10,642-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+2020-03-07 20:51:10,650-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+2020-03-07 20:51:11,326-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+2020-03-07 20:51:11,346-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:11,346-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+2020-03-07 20:51:11,355-INFO-case_login.py-web-日志信息:获取登录区域-登录跳转的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：3
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 获取登录区域-登录跳转的错误 查找元素文本内容：(&#x27;xpath&#x27;, &#x27;//span[contains(text(),&quot;登录失败&quot;)]&#x27;)<br/></div></td></tr></tbody>
+      <tbody class="passed results-table-row">
+        <tr>
+          <td class="col-result">Passed</td>
+          <td class="col-name">TestCases/Model_login/test_login.py::TestLogin::test_loginz_success</td>
+          <td class="col-duration">4.30</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log"> ------------------------------Captured stderr call------------------------------ <br/>2020-03-07 20:51:11,821-INFO-case_login.py-web-日志信息:等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:14,914-INFO-case_login.py-web-日志信息:等待结束。等待时长为：3
+2020-03-07 20:51:14,916-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+2020-03-07 20:51:14,924-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+2020-03-07 20:51:14,975-INFO-case_login.py-web-日志信息:查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+2020-03-07 20:51:14,981-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+2020-03-07 20:51:15,030-INFO-case_login.py-web-日志信息:查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+2020-03-07 20:51:15,037-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+2020-03-07 20:51:16,099-INFO-case_login.py-web-日志信息:等待元素(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;退出&quot;)]&#x27;)可见
+2020-03-07 20:51:16,120-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:16,121-INFO-case_login.py-web-日志信息:登录成功
+<br/> -------------------------------Captured log call-------------------------------- <br/>[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：3
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;username&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;username&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;id&#x27;, &#x27;password&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 输入元素：(&#x27;id&#x27;, &#x27;password&#x27;)
+[32mINFO    [0m web:case_login.py:28 查找元素(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 登录页面_登录功能 点击元素：(&#x27;xpath&#x27;, &#x27;//input[@value =&quot;登录&quot;]&#x27;)
+[32mINFO    [0m web:case_login.py:28 等待元素(&#x27;xpath&#x27;, &#x27;//a[contains(text(),&quot;退出&quot;)]&#x27;)可见
+[32mINFO    [0m web:case_login.py:28 等待结束。等待时长为：0
+[32mINFO    [0m web:case_login.py:28 登录成功<br/></div></td></tr></tbody></table></body></html>

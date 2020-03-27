@@ -1,0 +1,255 @@
+pytest --reruns 2 --reruns-delay 52020-03-07 20:45:39,605-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:45:39,640-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:45:39,641-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:45:39,654-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:45:39,753-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:45:39,762-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:45:39,807-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:45:39,817-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:45:41,677-INFO-case_login.py-web-日志信息:等待元素('xpath', '//li[@id="goodscase2"]')可见
+2020-03-07 20:45:59,015-INFO-case_login.py-web-日志信息:等待结束。等待时长为：17
+2020-03-07 20:45:59,016-INFO-case_login.py-web-日志信息:查找元素('xpath', '//li[@id="goodscase2"]')可见
+2020-03-07 20:45:59,025-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：('xpath', '//li[@id="goodscase2"]')
+2020-03-07 20:45:59,073-INFO-case_login.py-web-日志信息:查找元素('xpath', '//div[@id="index_sale_box_2"]//span')可见
+2020-03-07 20:45:59,081-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：('xpath', '//div[@id="index_sale_box_2"]//span')
+2020-03-07 20:45:59,164-INFO-case_login.py-web-日志信息:商品详情页窗口切换成功
+2020-03-07 20:45:59,165-INFO-case_login.py-web-日志信息:等待元素('xpath', '//input[@value="添加到购物车"]')可见
+2020-03-07 20:46:01,060-INFO-case_login.py-web-日志信息:等待结束。等待时长为：1
+2020-03-07 20:46:01,061-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value="添加到购物车"]')可见
+2020-03-07 20:46:01,069-INFO-case_login.py-web-日志信息:商品详情页 点击元素：('xpath', '//input[@value="添加到购物车"]')
+2020-03-07 20:46:01,110-INFO-case_login.py-web-日志信息:等待元素('xpath', '//li[contains(text(),"已成功添加到购物车！")]')可见
+2020-03-07 20:46:02,183-INFO-case_login.py-web-日志信息:等待结束。等待时长为：1
+2020-03-07 20:46:02,184-INFO-case_login.py-web-日志信息:查找元素('xpath', '//li[contains(text(),"已成功添加到购物车！")]')可见
+2020-03-07 20:46:02,196-INFO-case_login.py-web-日志信息:商品详情页-已成功添加到购物车！ 查找元素文本内容：('xpath', '//li[contains(text(),"已成功添加到购物车！")]')
+2020-03-07 20:46:02,218-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[@id="cart_goods_top_menu"]')可见
+2020-03-07 20:46:02,237-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:02,238-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[@id="cart_goods_top_menu"]')可见
+2020-03-07 20:46:02,270-INFO-case_login.py-web-日志信息:商品详情页-查看我的购物车鼠标悬浮成功
+2020-03-07 20:46:02,271-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(text(),"查看我的购物车")]')可见
+2020-03-07 20:46:12,708-INFO-case_login.py-web-日志信息:等待元素可见失败！！！
+2020-03-07 20:46:13,107-INFO-case_login.py-web-日志信息:截取网页成功，文件路径为：C:\Users\63503\Desktop\haigou_shopping\Outputs/screnshots/商品详情页-查看我的购物车_2020-03-07-20-46-12.png
+2020-03-07 20:46:13,164-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(@dialog_uri,"101711")]')可见
+2020-03-07 20:46:23,413-INFO-case_login.py-web-日志信息:等待元素可见失败！！！
+2020-03-07 20:46:23,838-INFO-case_login.py-web-日志信息:截取网页成功，文件路径为：C:\Users\63503\Desktop\haigou_shopping\Outputs/screnshots/购物车详情页-分享操作_2020-03-07-20-46-23.png
+2020-03-07 20:46:28,610-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:46:28,645-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:28,646-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:46:28,657-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:46:28,682-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:46:28,724-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:46:28,790-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:46:28,829-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:46:28,877-INFO-case_login.py-web-日志信息:等待元素('xpath', '//label[contains(text(),"用户名不能为空")]')可见
+2020-03-07 20:46:29,406-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:29,407-INFO-case_login.py-web-日志信息:查找元素('xpath', '//label[contains(text(),"用户名不能为空")]')可见
+2020-03-07 20:46:29,414-INFO-case_login.py-web-日志信息:获取登录区域-用户名的错误 查找元素文本内容：('xpath', '//label[contains(text(),"用户名不能为空")]')
+2020-03-07 20:46:29,941-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:46:29,964-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:29,965-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:46:29,974-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:46:30,023-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:46:30,031-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:46:30,058-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:46:30,067-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:46:30,109-INFO-case_login.py-web-日志信息:等待元素('xpath', '//label[contains(text(),"密码不能为空")]')可见
+2020-03-07 20:46:30,642-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:30,643-INFO-case_login.py-web-日志信息:查找元素('xpath', '//label[contains(text(),"密码不能为空")]')可见
+2020-03-07 20:46:30,649-INFO-case_login.py-web-日志信息:获取登录区域-密码的错误 查找元素文本内容：('xpath', '//label[contains(text(),"密码不能为空")]')
+2020-03-07 20:46:30,732-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:46:30,755-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:30,756-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:46:30,764-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:46:30,802-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:46:30,808-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:46:30,860-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:46:30,869-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:46:32,557-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:46:32,578-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:32,578-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:46:32,587-INFO-case_login.py-web-日志信息:获取登录区域-登录跳转的错误 查找元素文本内容：('xpath', '//span[contains(text(),"登录失败")]')
+2020-03-07 20:46:33,898-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:46:38,371-INFO-case_login.py-web-日志信息:等待结束。等待时长为：4
+2020-03-07 20:46:38,372-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:46:38,379-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:46:38,425-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:46:38,432-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:46:38,477-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:46:38,485-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:46:38,994-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:46:39,016-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:39,017-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:46:39,026-INFO-case_login.py-web-日志信息:获取登录区域-登录跳转的错误 查找元素文本内容：('xpath', '//span[contains(text(),"登录失败")]')
+2020-03-07 20:46:39,639-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:46:42,729-INFO-case_login.py-web-日志信息:等待结束。等待时长为：3
+2020-03-07 20:46:42,730-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:46:42,738-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:46:42,771-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:46:42,776-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:46:42,809-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:46:42,815-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:46:45,207-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(text(),"退出")]')可见
+2020-03-07 20:46:45,236-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:46:45,236-INFO-case_login.py-web-日志信息:登录成功
+2020-03-07 20:50:04,221-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:50:04,251-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:04,252-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:50:04,258-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:50:04,328-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:50:04,339-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:50:04,391-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:50:04,399-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:50:06,406-INFO-case_login.py-web-日志信息:等待元素('xpath', '//li[@id="goodscase2"]')可见
+2020-03-07 20:50:30,982-INFO-case_login.py-web-日志信息:等待结束。等待时长为：24
+2020-03-07 20:50:30,983-INFO-case_login.py-web-日志信息:查找元素('xpath', '//li[@id="goodscase2"]')可见
+2020-03-07 20:50:30,991-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：('xpath', '//li[@id="goodscase2"]')
+2020-03-07 20:50:31,036-INFO-case_login.py-web-日志信息:查找元素('xpath', '//div[@id="index_sale_box_2"]//span')可见
+2020-03-07 20:50:31,045-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：('xpath', '//div[@id="index_sale_box_2"]//span')
+2020-03-07 20:50:31,135-INFO-case_login.py-web-日志信息:商品详情页窗口切换成功
+2020-03-07 20:50:31,136-INFO-case_login.py-web-日志信息:等待元素('xpath', '//input[@value="添加到购物车"]')可见
+2020-03-07 20:50:34,831-INFO-case_login.py-web-日志信息:等待结束。等待时长为：3
+2020-03-07 20:50:34,832-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value="添加到购物车"]')可见
+2020-03-07 20:50:34,840-INFO-case_login.py-web-日志信息:商品详情页 点击元素：('xpath', '//input[@value="添加到购物车"]')
+2020-03-07 20:50:34,889-INFO-case_login.py-web-日志信息:等待元素('xpath', '//li[contains(text(),"已成功添加到购物车！")]')可见
+2020-03-07 20:50:35,431-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:35,432-INFO-case_login.py-web-日志信息:查找元素('xpath', '//li[contains(text(),"已成功添加到购物车！")]')可见
+2020-03-07 20:50:35,440-INFO-case_login.py-web-日志信息:商品详情页-已成功添加到购物车！ 查找元素文本内容：('xpath', '//li[contains(text(),"已成功添加到购物车！")]')
+2020-03-07 20:50:35,458-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[@id="cart_goods_top_menu"]')可见
+2020-03-07 20:50:35,480-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:35,481-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[@id="cart_goods_top_menu"]')可见
+2020-03-07 20:50:35,519-INFO-case_login.py-web-日志信息:商品详情页-查看我的购物车鼠标悬浮成功
+2020-03-07 20:50:35,520-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(text(),"查看我的购物车")]')可见
+2020-03-07 20:50:36,046-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:36,047-INFO-case_login.py-web-日志信息:查找元素('xpath', '//a[contains(text(),"查看我的购物车")]')可见
+2020-03-07 20:50:36,055-INFO-case_login.py-web-日志信息:商品详情页-查看我的购物车 点击元素：('xpath', '//a[contains(text(),"查看我的购物车")]')
+2020-03-07 20:50:37,308-INFO-case_login.py-web-日志信息:等待元素('id', 'favorite_101711')可见
+2020-03-07 20:50:37,330-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:37,331-INFO-case_login.py-web-日志信息:查找元素('id', 'favorite_101711')可见
+2020-03-07 20:50:37,338-INFO-case_login.py-web-日志信息:购物车详情页-收藏操作 点击元素：('id', 'favorite_101711')
+2020-03-07 20:50:38,376-INFO-case_login.py-web-日志信息:获取警告框成功！！
+2020-03-07 20:50:38,378-INFO-case_login.py-web-日志信息:获取到警告框文本：您已经收藏过该商品!
+2020-03-07 20:50:38,382-INFO-case_login.py-web-日志信息:关闭警告框成功!!
+2020-03-07 20:50:38,387-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(@dialog_uri,"101711")]')可见
+2020-03-07 20:50:38,411-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:38,412-INFO-case_login.py-web-日志信息:查找元素('xpath', '//a[contains(@dialog_uri,"101711")]')可见
+2020-03-07 20:50:38,422-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 点击元素：('xpath', '//a[contains(@dialog_uri,"101711")]')
+2020-03-07 20:50:41,095-INFO-case_login.py-web-日志信息:等待元素('xpath', '//textarea')可见
+2020-03-07 20:50:41,116-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:50:41,117-INFO-case_login.py-web-日志信息:查找元素('xpath', '//textarea')可见
+2020-03-07 20:50:41,126-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 输入元素：('xpath', '//textarea')
+2020-03-07 20:50:41,162-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@id="share_storeOrgoods"]')可见
+2020-03-07 20:50:41,173-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 点击元素：('xpath', '//input[@id="share_storeOrgoods"]')
+2020-03-07 20:50:41,203-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[contains(text(),"发布成功！")]')可见
+2020-03-07 20:50:42,247-INFO-case_login.py-web-日志信息:等待结束。等待时长为：1
+2020-03-07 20:50:42,248-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[contains(text(),"发布成功！")]')可见
+2020-03-07 20:50:42,255-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 查找元素文本内容：('xpath', '//span[contains(text(),"发布成功！")]')
+2020-03-07 20:51:01,317-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:51:01,342-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:01,343-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:51:01,350-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:51:01,392-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:51:01,404-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:51:01,460-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:51:01,473-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:51:01,535-INFO-case_login.py-web-日志信息:等待元素('xpath', '//label[contains(text(),"用户名不能为空")]')可见
+2020-03-07 20:51:02,071-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:02,071-INFO-case_login.py-web-日志信息:查找元素('xpath', '//label[contains(text(),"用户名不能为空")]')可见
+2020-03-07 20:51:02,078-INFO-case_login.py-web-日志信息:获取登录区域-用户名的错误 查找元素文本内容：('xpath', '//label[contains(text(),"用户名不能为空")]')
+2020-03-07 20:51:02,479-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:51:02,502-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:02,503-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:51:02,510-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:51:02,559-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:51:02,567-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:51:02,594-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:51:02,603-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:51:02,641-INFO-case_login.py-web-日志信息:等待元素('xpath', '//label[contains(text(),"密码不能为空")]')可见
+2020-03-07 20:51:03,184-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:03,185-INFO-case_login.py-web-日志信息:查找元素('xpath', '//label[contains(text(),"密码不能为空")]')可见
+2020-03-07 20:51:03,191-INFO-case_login.py-web-日志信息:获取登录区域-密码的错误 查找元素文本内容：('xpath', '//label[contains(text(),"密码不能为空")]')
+2020-03-07 20:51:03,210-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:51:03,583-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:03,584-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:51:03,591-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:51:03,631-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:51:03,638-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:51:03,687-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:51:03,695-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:51:06,360-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:51:06,382-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:06,383-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:51:06,390-INFO-case_login.py-web-日志信息:获取登录区域-登录跳转的错误 查找元素文本内容：('xpath', '//span[contains(text(),"登录失败")]')
+2020-03-07 20:51:07,111-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:51:10,525-INFO-case_login.py-web-日志信息:等待结束。等待时长为：3
+2020-03-07 20:51:10,526-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:51:10,532-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:51:10,586-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:51:10,594-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:51:10,642-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:51:10,650-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:51:11,326-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:51:11,346-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:11,346-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[contains(text(),"登录失败")]')可见
+2020-03-07 20:51:11,355-INFO-case_login.py-web-日志信息:获取登录区域-登录跳转的错误 查找元素文本内容：('xpath', '//span[contains(text(),"登录失败")]')
+2020-03-07 20:51:11,821-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-07 20:51:14,914-INFO-case_login.py-web-日志信息:等待结束。等待时长为：3
+2020-03-07 20:51:14,916-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-07 20:51:14,924-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-07 20:51:14,975-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-07 20:51:14,981-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-07 20:51:15,030-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-07 20:51:15,037-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-07 20:51:16,099-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(text(),"退出")]')可见
+2020-03-07 20:51:16,120-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-07 20:51:16,121-INFO-case_login.py-web-日志信息:登录成功
+2020-03-27 09:06:54,518-INFO-case_login.py-web-日志信息:等待元素('id', 'username')可见
+2020-03-27 09:06:54,543-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-27 09:06:54,543-INFO-case_login.py-web-日志信息:查找元素('id', 'username')可见
+2020-03-27 09:06:54,552-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'username')
+2020-03-27 09:06:54,609-INFO-case_login.py-web-日志信息:查找元素('id', 'password')可见
+2020-03-27 09:06:54,619-INFO-case_login.py-web-日志信息:登录页面_登录功能 输入元素：('id', 'password')
+2020-03-27 09:06:54,667-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value ="登录"]')可见
+2020-03-27 09:06:54,677-INFO-case_login.py-web-日志信息:登录页面_登录功能 点击元素：('xpath', '//input[@value ="登录"]')
+2020-03-27 09:06:56,597-INFO-case_login.py-web-日志信息:等待元素('xpath', '//li[@id="goodscase2"]')可见
+2020-03-27 09:07:15,587-INFO-case_login.py-web-日志信息:等待结束。等待时长为：18
+2020-03-27 09:07:15,587-INFO-case_login.py-web-日志信息:查找元素('xpath', '//li[@id="goodscase2"]')可见
+2020-03-27 09:07:15,597-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：('xpath', '//li[@id="goodscase2"]')
+2020-03-27 09:07:15,648-INFO-case_login.py-web-日志信息:查找元素('xpath', '//div[@id="index_sale_box_2"]//span')可见
+2020-03-27 09:07:15,661-INFO-case_login.py-web-日志信息:首页面-选择商品 点击元素：('xpath', '//div[@id="index_sale_box_2"]//span')
+2020-03-27 09:07:15,738-INFO-case_login.py-web-日志信息:商品详情页窗口切换成功
+2020-03-27 09:07:15,739-INFO-case_login.py-web-日志信息:等待元素('xpath', '//input[@value="添加到购物车"]')可见
+2020-03-27 09:07:17,292-INFO-case_login.py-web-日志信息:等待结束。等待时长为：1
+2020-03-27 09:07:17,293-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@value="添加到购物车"]')可见
+2020-03-27 09:07:17,301-INFO-case_login.py-web-日志信息:商品详情页 点击元素：('xpath', '//input[@value="添加到购物车"]')
+2020-03-27 09:07:17,348-INFO-case_login.py-web-日志信息:等待元素('xpath', '//li[contains(text(),"已成功添加到购物车！")]')可见
+2020-03-27 09:07:17,889-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-27 09:07:17,890-INFO-case_login.py-web-日志信息:查找元素('xpath', '//li[contains(text(),"已成功添加到购物车！")]')可见
+2020-03-27 09:07:17,899-INFO-case_login.py-web-日志信息:商品详情页-已成功添加到购物车！ 查找元素文本内容：('xpath', '//li[contains(text(),"已成功添加到购物车！")]')
+2020-03-27 09:07:17,915-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[@id="cart_goods_top_menu"]')可见
+2020-03-27 09:07:17,937-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-27 09:07:17,938-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[@id="cart_goods_top_menu"]')可见
+2020-03-27 09:07:17,978-INFO-case_login.py-web-日志信息:商品详情页-查看我的购物车鼠标悬浮成功
+2020-03-27 09:07:17,979-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(text(),"查看我的购物车")]')可见
+2020-03-27 09:07:18,511-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-27 09:07:18,512-INFO-case_login.py-web-日志信息:查找元素('xpath', '//a[contains(text(),"查看我的购物车")]')可见
+2020-03-27 09:07:18,520-INFO-case_login.py-web-日志信息:商品详情页-查看我的购物车 点击元素：('xpath', '//a[contains(text(),"查看我的购物车")]')
+2020-03-27 09:07:19,243-INFO-case_login.py-web-日志信息:等待元素('id', 'favorite_101711')可见
+2020-03-27 09:07:19,265-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-27 09:07:19,266-INFO-case_login.py-web-日志信息:查找元素('id', 'favorite_101711')可见
+2020-03-27 09:07:19,274-INFO-case_login.py-web-日志信息:购物车详情页-收藏操作 点击元素：('id', 'favorite_101711')
+2020-03-27 09:07:20,322-INFO-case_login.py-web-日志信息:获取警告框成功！！
+2020-03-27 09:07:20,326-INFO-case_login.py-web-日志信息:获取到警告框文本：您已经收藏过该商品!
+2020-03-27 09:07:20,331-INFO-case_login.py-web-日志信息:关闭警告框成功!!
+2020-03-27 09:07:20,337-INFO-case_login.py-web-日志信息:等待元素('xpath', '//a[contains(@dialog_uri,"101711")]')可见
+2020-03-27 09:07:20,370-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-27 09:07:20,371-INFO-case_login.py-web-日志信息:查找元素('xpath', '//a[contains(@dialog_uri,"101711")]')可见
+2020-03-27 09:07:20,381-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 点击元素：('xpath', '//a[contains(@dialog_uri,"101711")]')
+2020-03-27 09:07:20,609-INFO-case_login.py-web-日志信息:等待元素('xpath', '//textarea')可见
+2020-03-27 09:07:20,643-INFO-case_login.py-web-日志信息:等待结束。等待时长为：0
+2020-03-27 09:07:20,644-INFO-case_login.py-web-日志信息:查找元素('xpath', '//textarea')可见
+2020-03-27 09:07:20,653-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 输入元素：('xpath', '//textarea')
+2020-03-27 09:07:20,746-INFO-case_login.py-web-日志信息:查找元素('xpath', '//input[@id="share_storeOrgoods"]')可见
+2020-03-27 09:07:20,763-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 点击元素：('xpath', '//input[@id="share_storeOrgoods"]')
+2020-03-27 09:07:20,815-INFO-case_login.py-web-日志信息:等待元素('xpath', '//span[contains(text(),"发布成功！")]')可见
+2020-03-27 09:07:22,901-INFO-case_login.py-web-日志信息:等待结束。等待时长为：2
+2020-03-27 09:07:22,901-INFO-case_login.py-web-日志信息:查找元素('xpath', '//span[contains(text(),"发布成功！")]')可见
+2020-03-27 09:07:22,901-INFO-case_login.py-web-日志信息:购物车详情页-分享操作 查找元素文本内容：('xpath', '//span[contains(text(),"发布成功！")]')
